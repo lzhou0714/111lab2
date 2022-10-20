@@ -156,51 +156,51 @@ int main(int argc, char *argv[])
 
   /* Your code here */
   //data points to array of process structs
-  u32 min_start = data[0].arrival_time;
-  struct process * proc = &data[0];
-  u32 i;
-  for(i = 1;i<size;i++){
-    data[i].start_exec_time = -1; //initiate start time to -1, process has not started
-    if (data[i].arrival_time < min_start){
-      min_start = data[i].arrival_time;
-      proc  = &data[i];
-    }
-  }
-  u32 curr_time = 0;
-  u32 finished = 0;
-  printf("first procss %d", proc->arrival_time);
-  TAILQ_INSERT_TAIL(&list, proc,pointers);
+  // u32 min_start = data[0].arrival_time;
+  // struct process * proc = &data[0];
+  // u32 i;
+  // for(i = 1;i<size;i++){
+  //   data[i].start_exec_time = -1; //initiate start time to -1, process has not started
+  //   if (data[i].arrival_time < min_start){
+  //     min_start = data[i].arrival_time;
+  //     proc  = &data[i];
+  //   }
+  // }
+  // u32 curr_time = 0;
+  // u32 finished = 0;
+  // printf("first procss %d", proc->arrival_time);
+  // TAILQ_INSERT_TAIL(&list, proc,pointers);
   
-  while(finished != size){
-    for(i=0; i< size;i++){
-      if (data[i].arrival_time == curr_time && data[i].burst_time >0){
-        TAILQ_INSERT_TAIL(&list, &data[i],pointers);
-      }
-      proc = TAILQ_FIRST(&list);
-      TAILQ_REMOVE(&list, proc,pointers);
-      if (proc->start_exec_time == -1){
-        proc->start_exec_time = curr_time;
-      }
-      if (proc->burst_time < quantum_length){
-        curr_time+= proc->burst_time;
-        proc->burst_time =0;
-      }
-      else{
-        proc->burst_time -= quantum_length;
-        curr_time += quantum_length;
-      }
-      if (proc->burst_time == 0){
-        proc->end_time = curr_time;
-        finished++;
-      }
-      else 
-        TAILQ_INSERT_TAIL(&list, proc, pointers);
-    }
-  }
-  for (i = 0; i<size;i++){
-    total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time;
-    total_response_time += data[i].start_exec_time - data[i].arrival_time;
-  }
+  // while(finished != size){
+  //   for(i=0; i< size;i++){
+  //     if (data[i].arrival_time == curr_time && data[i].burst_time >0){
+  //       TAILQ_INSERT_TAIL(&list, &data[i],pointers);
+  //     }
+  //     proc = TAILQ_FIRST(&list);
+  //     TAILQ_REMOVE(&list, proc,pointers);
+  //     if (proc->start_exec_time == -1){
+  //       proc->start_exec_time = curr_time;
+  //     }
+  //     if (proc->burst_time < quantum_length){
+  //       curr_time+= proc->burst_time;
+  //       proc->burst_time =0;
+  //     }
+  //     else{
+  //       proc->burst_time -= quantum_length;
+  //       curr_time += quantum_length;
+  //     }
+  //     if (proc->burst_time == 0){
+  //       proc->end_time = curr_time;
+  //       finished++;
+  //     }
+  //     else 
+  //       TAILQ_INSERT_TAIL(&list, proc, pointers);
+  //   }
+  // }
+  // for (i = 0; i<size;i++){
+  //   total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time;
+  //   total_response_time += data[i].start_exec_time - data[i].arrival_time;
+  // }
   /* End of "Your code here" */
 
   printf("Average waiting time: %.2f\n", (float) total_waiting_time / (float) size);
