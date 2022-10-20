@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
-  u32 min_start = data.arrival_time;
+  u32 min_start = data[0].arrival_time;
   u32 curr_time = 0;
   for(u32 i = 1;i<size;i++){
     if (data[i].arrival_time < min_start)
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
       data[i].start_exec_time = -1;
   }
   
-  TAILQ_INSERT_TAIL(&list, )
+  // TAILQ_INSERT_TAIL(&list, )
   
   /* End of "Your code here" */
 
