@@ -161,9 +161,10 @@ int main(int argc, char *argv[])
   u32 curr_time = 0;
   for(u32 i = 1;i<size;i++){
     data[i].start_exec_time = -1; //initiate start time to -1, process has not started
-    if (data[i].arrival_time < min_start)
+    if (data[i].arrival_time < min_start){
       min_start = data[i].arrival_time;
       proc  = &data[i];
+    }
   }
   printf("first procss %d", proc->arrival_time);
   TAILQ_INSERT_TAIL(&list, proc,pointers);
