@@ -155,15 +155,18 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
+  //data points to array of process structs
   u32 min_start = data[0].arrival_time;
+  struct process * proc;
   u32 curr_time = 0;
   for(u32 i = 1;i<size;i++){
+    data[i].start_exec_time = -1; //initiate start time to -1, process has not started
     if (data[i].arrival_time < min_start)
       min_start = data[i].arrival_time;
-      data[i].start_exec_time = -1;
+      proc  = &data[i];
   }
   
-  // TAILQ_INSERT_TAIL(&list, )
+  TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   /* End of "Your code here" */
 
