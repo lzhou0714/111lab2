@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
       proc->arrival_time, 
       proc->remaining_time);
 
-      TAILQ_REMOVE_HEAD(&list,pointers);
+      TAILQ_REMOVE(&list, proc,pointers);
       
       printf("new top: pid %d, proc.arrival_time %d, proc.remaining_time %d \n", 
       TAILQ_FIRST(&list)->pid,
