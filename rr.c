@@ -166,10 +166,10 @@ int main(int argc, char *argv[])
       proc  = &data[i];
     }
   }
-  // u32 curr_time = 0;
-  // u32 finished = 0;
-  // printf("first procss %d", proc->arrival_time);
-  // TAILQ_INSERT_TAIL(&list, proc,pointers);
+  u32 curr_time = 0;
+  u32 finished = 0;
+  printf("first procss %d", proc->arrival_time);
+  TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   // while(finished != size){
   //   for(i=0; i< size;i++){
