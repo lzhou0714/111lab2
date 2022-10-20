@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
     if (!TAILQ_EMPTY(&list)){
       proc = TAILQ_FIRST(&list);
       TAILQ_REMOVE(&list, proc,pointers);
-      printf("proc.arriva_time %d", proc->arrival_time);
+      printf("pid %d, proc.arriva_time %d \n", proc->pid,proc->arrival_time);
       if (proc->start_exec_time == -1){
         proc->start_exec_time = curr_time;
       }
