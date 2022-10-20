@@ -19,6 +19,7 @@ struct process {
 
   u32 start_exec_time;
   u32 end_time;
+  u32 remaining_time;
 
   TAILQ_ENTRY(process) pointers;
 
@@ -161,6 +162,7 @@ int main(int argc, char *argv[])
   u32 i;
   for(i = 1;i<size;i++){
     data[i].start_exec_time = -1; //initiate start time to -1, process has not started
+    data[i].remaining_time = data[i].burst_time;
     if (data[i].arrival_time < min_start){
       min_start = data[i].arrival_time;
       proc  = &data[i];
@@ -168,13 +170,13 @@ int main(int argc, char *argv[])
   }
   u32 curr_time = 0;
   u32 finished = 0;
-  printf("first procss %d", proc->arrival_time);
+  // printf("first procss %d", proc->arrival_time);
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   while(finished != size){
     for(i=0; i< size;i++)
     {
-      if (data[i].arrival_time == curr_time && data[i].burst_time >0)
+      if (data[i].arrival_time == curr_time && data[i].remaining_time >0)
       {
         TAILQ_INSERT_TAIL(&list, &data[i],pointers);
       }
@@ -185,15 +187,15 @@ int main(int argc, char *argv[])
       if (proc->start_exec_time == -1){
         proc->start_exec_time = curr_time;
       }
-      if (proc->burst_time < quantum_length){
-        curr_time+= proc->burst_time;
-        proc->burst_time =0;
+      if (proc->remaining_time < quantum_length){
+        curr_time+= proc->remaining_time;
+        proc->remaining_time =0;
       }
       else{
-        proc->burst_time -= quantum_length;
+        proc->remaining_time -= quantum_length;
         curr_time += quantum_length;
       }
-      if (proc->burst_time == 0){
+      if (proc->remaining_time == 0){
         proc->end_time = curr_time;
         finished++;
       }
