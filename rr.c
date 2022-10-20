@@ -183,8 +183,17 @@ int main(int argc, char *argv[])
     }
     if (!TAILQ_EMPTY(&list)){
       proc = TAILQ_FIRST(&list);
+      printf("pid %d, proc.arrival_time %d, proc.remaining_time %d \n", 
+      proc->pid, 
+      proc->arrival_time, 
+      proc->remaining_time);
+
       TAILQ_REMOVE(&list, proc,pointers);
-      printf("pid %d, proc.arriva_time %d \n", proc->pid,proc->arrival_time);
+      printf("new top: pid %d, proc.arrival_time %d, proc.remaining_time %d \n", 
+      TAILQ_FIRST(&list)->pid,
+      TAILQ_FIRST(&list)->arrival_time, 
+      TAILQ_FIRST(&list)->remaining_time);
+
       if (proc->start_exec_time == -1){
         proc->start_exec_time = curr_time;
       }
