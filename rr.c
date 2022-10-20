@@ -156,16 +156,16 @@ int main(int argc, char *argv[])
 
   /* Your code here */
   //data points to array of process structs
-  // u32 min_start = data[0].arrival_time;
-  // struct process * proc = &data[0];
-  // u32 i;
-  // for(i = 1;i<size;i++){
-  //   data[i].start_exec_time = -1; //initiate start time to -1, process has not started
-  //   if (data[i].arrival_time < min_start){
-  //     min_start = data[i].arrival_time;
-  //     proc  = &data[i];
-  //   }
-  // }
+  u32 min_start = data[0].arrival_time;
+  struct process * proc = &data[0];
+  u32 i;
+  for(i = 1;i<size;i++){
+    data[i].start_exec_time = -1; //initiate start time to -1, process has not started
+    if (data[i].arrival_time < min_start){
+      min_start = data[i].arrival_time;
+      proc  = &data[i];
+    }
+  }
   // u32 curr_time = 0;
   // u32 finished = 0;
   // printf("first procss %d", proc->arrival_time);
