@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
       if (data[i].arrival_time == curr_time && data[i].burst_time >0){
         TAILQ_INSERT_TAIL(&list, &data[i],pointers);
       }
-      proc = &TAILQ_FIRST();
+      proc = &TAILQ_FIRST(&list);
       TAILQ_REMOVE(&list, proc,pointers);
       if (proc->start_exec_time == -1){
         proc->start_exec_time = curr_time;
