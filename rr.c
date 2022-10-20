@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
     }
   }
   for (i = 0; i<size;i++){
-    total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time
+    total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time;
     total_response_time += data[i].start_exec_time - data[i].arrival_time;
   }
   /* End of "Your code here" */
