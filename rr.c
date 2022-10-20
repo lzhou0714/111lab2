@@ -17,13 +17,21 @@ struct process {
   u32 arrival_time;
   u32 burst_time;
 
+  u32 start_exec_time = -1;
+  u32 end_time;
+
   TAILQ_ENTRY(process) pointers;
 
   /* Additional fields here */
+  //each process is a node in the tailq
   /* End of "Additional fields here" */
 };
 
 TAILQ_HEAD(process_list, process);
+/*
+process_list = struct created by tailQ_head of type process
+
+*/
 
 u32 next_int(const char **data, const char *data_end) {
   u32 current = 0;
@@ -31,6 +39,7 @@ u32 next_int(const char **data, const char *data_end) {
   while (*data != data_end) {
     char c = **data;
 
+    //check that current character is a number
     if (c < 0x30 || c > 0x39) {
       if (started) {
 	return current;
@@ -42,7 +51,7 @@ u32 next_int(const char **data, const char *data_end) {
 	started = true;
       }
       else {
-	current *= 10;
+	current *= 10; //mutiply by 10 to prepare to add in next number
 	current += (c - 0x30);
       }
     }
@@ -136,12 +145,25 @@ int main(int argc, char *argv[])
   u32 quantum_length = next_int_from_c_str(argv[2]);
 
   struct process_list list;
-  TAILQ_INIT(&list);
+  /*
+  process_list struct contains a pair of pointers, 
+  one to the first element and one to the last element of the quque
+  */
+  TAILQ_INIT(&list); //list  = head pointer of tailq
 
   u32 total_waiting_time = 0;
   u32 total_response_time = 0;
 
   /* Your code here */
+  u32 min_start = data[0]->arrival_time;
+  u32 curr_time = 0;
+  for(u32 i = 1;i<size;i++){
+    if (data[i] -> arrival_time < min_start)
+      min_start = data[i]->arrival_time;
+  }
+  
+  TAILQ_INSERT_TAIL(&list, )
+  
   /* End of "Your code here" */
 
   printf("Average waiting time: %.2f\n", (float) total_waiting_time / (float) size);
