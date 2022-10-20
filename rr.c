@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
       min_start = data[i].arrival_time;
       proc  = &data[i];
   }
-  
+  printf("first procss %d", proc.arrival_time);
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   /* End of "Your code here" */
