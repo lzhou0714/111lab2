@@ -17,7 +17,7 @@ struct process {
   u32 arrival_time;
   u32 burst_time;
 
-  u32 start_exec_time = -1;
+  u32 start_exec_time;
   u32 end_time;
 
   TAILQ_ENTRY(process) pointers;
@@ -155,11 +155,12 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
-  u32 min_start = data[0]->arrival_time;
+  u32 min_start = data.arrival_time;
   u32 curr_time = 0;
   for(u32 i = 1;i<size;i++){
-    if (data[i] -> arrival_time < min_start)
-      min_start = data[i]->arrival_time;
+    if (data[i].arrival_time < min_start)
+      min_start = data[i].arrival_time;
+      data[i].start_exec_time = -1;
   }
   
   TAILQ_INSERT_TAIL(&list, )
