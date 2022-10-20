@@ -167,14 +167,14 @@ int main(int argc, char *argv[])
     }
   }
   u32 curr_time = 0;
-  u32 finished = 0
+  u32 finished = 0;
   printf("first procss %d", proc->arrival_time);
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   while(finished != size){
     for(i=0; i< size;i++){
       if (data[i].arrival_time == curr_time && data[i].burst_time >0){
-        TAILQ_INSERT_TAIL(&list, data[i],pointers);
+        TAILQ_INSERT_TAIL(&list, &data[i],pointers);
       }
       proc = &TAILQ_FIRST();
       TAILQ_REMOVE(&list, proc,pointers);
