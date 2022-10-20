@@ -1,8 +1,8 @@
-CFLAGS = -std=gnu17 -Wpedantic -Wall -O0 -pipe -fno-plt -fPIC
+CFLAGS = -std=gnu17 -Wpedantic -Wall -O0 -pipe -fno-plt -fPIC -g
 ifeq ($(shell uname -s),Darwin)
 	LDFLAGS =
 else
-	LDFLAGS = -lrt -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
+	LDFLAGS = -lrt -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now, 
 endif
 
 .PHONY: all
