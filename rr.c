@@ -171,32 +171,39 @@ int main(int argc, char *argv[])
   printf("first procss %d", proc->arrival_time);
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
-  // while(finished != size){
-  //   for(i=0; i< size;i++){
-  //     if (data[i].arrival_time == curr_time && data[i].burst_time >0){
-  //       TAILQ_INSERT_TAIL(&list, &data[i],pointers);
-  //     }
-  //     proc = TAILQ_FIRST(&list);
-  //     TAILQ_REMOVE(&list, proc,pointers);
-  //     if (proc->start_exec_time == -1){
-  //       proc->start_exec_time = curr_time;
-  //     }
-  //     if (proc->burst_time < quantum_length){
-  //       curr_time+= proc->burst_time;
-  //       proc->burst_time =0;
-  //     }
-  //     else{
-  //       proc->burst_time -= quantum_length;
-  //       curr_time += quantum_length;
-  //     }
-  //     if (proc->burst_time == 0){
-  //       proc->end_time = curr_time;
-  //       finished++;
-  //     }
-  //     else 
-  //       TAILQ_INSERT_TAIL(&list, proc, pointers);
-  //   }
-  // }
+  while(finished != size){
+    for(i=0; i< size;i++)
+    {
+      if (data[i].arrival_time == curr_time && data[i].burst_time >0)
+      {
+        TAILQ_INSERT_TAIL(&list, &data[i],pointers);
+      }
+    }
+    if (!TAILQ_EMPTY(&list)){
+      proc = TAILQ_FIRST(&list);
+      TAILQ_REMOVE(&list, proc,pointers);
+      if (proc->start_exec_time == -1){
+        proc->start_exec_time = curr_time;
+      }
+      if (proc->burst_time < quantum_length){
+        curr_time+= proc->burst_time;
+        proc->burst_time =0;
+      }
+      else{
+        proc->burst_time -= quantum_length;
+        curr_time += quantum_length;
+      }
+      if (proc->burst_time == 0){
+        proc->end_time = curr_time;
+        finished++;
+      }
+      else 
+        TAILQ_INSERT_TAIL(&list, proc, pointers);
+    }
+    else{
+      curr_time++;
+    }
+  }
   for (i = 0; i<size;i++){
     total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time;
     total_response_time += data[i].start_exec_time - data[i].arrival_time;
