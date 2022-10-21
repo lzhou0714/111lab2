@@ -157,68 +157,71 @@ int main(int argc, char *argv[])
 
   /* Your code here */
   //data points to array of process structs
+  
   u32 min_start = data[0].arrival_time;
   struct process * proc = &data[0];
   u32 i;
-  for(i = 1;i<size;i++){
+  for(i = 0;i<size;i++){
     data[i].start_exec_time = -1; //initiate start time to -1, process has not started
     data[i].remaining_time = data[i].burst_time;
     if (data[i].arrival_time < min_start){
       min_start = data[i].arrival_time;
       proc  = &data[i];
     }
+    // printf("pid: %d, startexec %d, remainingtime %d \n", data[i].pid, data[i].start_exec_time, data[i].remaining_time);
   }
-  u32 curr_time = proc->arrival_time; //earlist time any process starts
+  u32 curr_time = proc->arrival_time;
   u32 finished = 0;
-  // printf("first procss %d", proc->arrival_time);
+  u32 quant_count;
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
-  while(finished != size){
+  while(finished < size){
+    // printf("currtime %d", curr_time);
     for(i=0; i< size;i++)
     {
-      if (data[i].arrival_time == curr_time && data[i].remaining_time >0)
+      if (data[i].arrival_time == curr_time
+        && data[i].remaining_time >0
+        && &data[i] !=TAILQ_FIRST(&list) )
       {
         TAILQ_INSERT_TAIL(&list, &data[i],pointers);
       }
     }
-    if (!TAILQ_EMPTY(&list)){
+    if (quant_count== quantum_length){
+      if (proc){
+          // printf("reinsert: %d\n", proc->pid);
+          TAILQ_INSERT_TAIL(&list, proc, pointers);
+        }
+        proc = NULL;
+        quant_count=0;
+    }
+    //no process running, run next waiting process
+    if (!TAILQ_EMPTY(&list) &&  quant_count==0){
       proc = TAILQ_FIRST(&list);
-      printf("pid %d, proc.arrival_time %d, proc.remaining_time %d \n", 
-      proc->pid, 
-      proc->arrival_time, 
-      proc->remaining_time);
-
-      TAILQ_REMOVE(&list, proc,pointers);
-      
-      printf("new top: pid %d, proc.arrival_time %d, proc.remaining_time %d \n", 
-      TAILQ_FIRST(&list)->pid,
-      TAILQ_FIRST(&list)->arrival_time, 
-      TAILQ_FIRST(&list)->remaining_time);
-
+      // printf("starting: %d", proc->pid);
+      TAILQ_REMOVE(&list, TAILQ_FIRST(&list),pointers);
       if (proc->start_exec_time == -1){
-        proc->start_exec_time = curr_time;
-      }
-      if (proc->remaining_time < quantum_length){
-        curr_time+= proc->remaining_time;
-        proc->remaining_time =0;
-      }
-      else{
-        proc->remaining_time -= quantum_length;
-        curr_time += quantum_length;
-      }
-      if (proc->remaining_time == 0){
-        proc->end_time = curr_time;
-        finished++;
-      }
-      else 
-        TAILQ_INSERT_TAIL(&list, proc, pointers);
+          proc->start_exec_time = curr_time;
+        }
     }
-    else{
-      curr_time++;
+    if(proc){
+      //executing process
+      // printf("running: %d\n", proc->pid);   
+        proc->remaining_time--;
+        quant_count++; 
+        if (proc->remaining_time ==0){
+          proc->end_time = curr_time + 1;
+          finished++;
+          proc = NULL;
+          quant_count = 0;
+          // printf("finished %d", finished);
+        } 
     }
+    
+    //no processes to execute right now
+    curr_time++;
   }
   for (i = 0; i<size;i++){
-    printf("end time %d, arrival time %d, start exec: %d",data[i].end_time, data[i].arrival_time, data[i].start_exec_time);
+    // printf("end time %d, arrival time %d, start exec: %d",data[i].end_time, data[i].arrival_time, data[i].start_exec_time);
     total_waiting_time += data[i].end_time - data[i].arrival_time - data[i].burst_time;
     total_response_time += data[i].start_exec_time - data[i].arrival_time;
   }
