@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
   TAILQ_INSERT_TAIL(&list, proc,pointers);
   
   while(finished < size){
-    // printf("currtime %d", curr_time);
+    printf("currtime %d", curr_time);
     for(i=0; i< size;i++)
     {
       if (data[i].arrival_time == curr_time
@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
     }
     if(proc){
       //executing process
-      // printf("running: %d\n", proc->pid);   
+      printf("running: %d\n", proc->pid);   
         proc->remaining_time--;
         quant_count++; 
         if (proc->remaining_time ==0){
